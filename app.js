@@ -7,6 +7,9 @@ import mongoose from 'mongoose';
 const app = express();
 
 const uri = 'mongodb://localhost:27017/udemy'
+//Conexion en la nube
+// const uri = 'mongodb+srv://<User_Udemy>:<10531053>@clusterin.q4mhtqw.mongodb.net/Udemy?retryWrites=true&w=majority'
+
 // const options = { useNewUrlParser: true, useCreateIndex: true }
 const options = {
     autoIndex: false,
@@ -38,6 +41,7 @@ app.use(express.urlencoded({ extended: true }));
 // });
 
 app.use('/api', require('./routes/nota'));
+app.use('/api', require('./routes/user'));
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');
