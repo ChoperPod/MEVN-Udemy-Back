@@ -19,7 +19,13 @@ const userSchema = new Schema({
 });
 
 // Validator
-userSchema.plugin(uniqueValidator, { message: 'Error, esperaba {PATH} unico.'});
+userSchema.plugin(uniqueValidator, { message: 'Error, esperaba un {PATH} unico.'});
+
+userSchema.methods.toJSON = function (){
+    const obj = this.toObject();
+    delete obj.pass;
+    return obj;
+}
 
 // Convertir a modelo
 const User = mongoose.model('User', userSchema);
