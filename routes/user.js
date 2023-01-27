@@ -5,6 +5,8 @@ const router = express.Router();
 // Importamos modelo Tarea
 import User from '../models/user';
 
+const {verificarAuth} = require('../middlewares/autenticacion.js');
+
 // Hash Contraseña
 import bcrypt from "bcrypt"
 // const bcrypt = require('bcrypt');
@@ -40,7 +42,7 @@ router.get('/', function(req, res, next){
 });
 
 // PUT usuario
-router.put('/usuario/:id', async(req, res) => {
+router.put('/usuario/:id', verificarAuth, async(req, res) => {
     const _id = req.params.id;
     const body = _.pick(req.body, ['nombre', 'email', 'pass', 'activo']);
     if(body.pass){
@@ -48,6 +50,7 @@ router.put('/usuario/:id', async(req, res) => {
     }
     try {
         const usuarioDB = await User.findByIdAndUpdate(_id, body, {new: true, runValidators: true});
+        return res.json(usuarioDB);
     } catch (error) {
         return res.status(400).json({
             mensaje: 'Ocurrio un error',
