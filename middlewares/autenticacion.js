@@ -1,14 +1,34 @@
+const jwt = require('jsonwebtoken');
+
 const verificarAuth = (req, res, next) => {
-    // res.json({
-    //     mensjae: 'Dentro del middleware'
-    // })
+    const token = req.get('token')
+    // console.log('El token generado es: ' + token)
+    jwt.verify(token, 'secret', (err, decoded) => {
 
-    // Leer headers
-    let token = req.get('token');
+        if (err) {
+            return res.status(401).json({
+                mensaje: 'Error de token',
+                err
+            })
+        }
 
-    console.log(token);
+        // Crea una propiedad con la info de usuario
+        req.usuario = decoded.data;
+        next();
+    })
+}
+
+// Verifica quer el rol sea = a ADMIN
+const verificarAdministrador = (req, res, next) => {
+    const rol = req.usuario.role;
+    console.log(rol);
+
+    if (rol !== 'ADMIN') {
+        return res.status(401).json({
+            mensaje: 'Rol no autorizado!'
+        })
+    }
 
     next();
 }
-
-modules.exports = { verificarAuth }
+module.exports = { verificarAuth, verificarAdministrador };
