@@ -7,14 +7,15 @@ const saltRounds = 10;
 // Importacion de JSON Web Token
 const jwt = require('jsonwebtoken');
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
     const body = req.body;
+    console.log('error desde backend')
     try {
         // Evaluando el Email
         const usuarioDB = await User.findOne({ email: body.email })
-        if (!usuarioDB) {
+        if (!usuarioDB) {   
             return res.status(400).json({
-                mensaje: 'Email no encontrado'
+                mensaje: 'Email no encontrado'      
             })
         }
 
