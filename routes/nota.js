@@ -78,8 +78,6 @@ router.get('/nota', verificarAuth, async (req, res) => {
     const usuarioId = req.usuario._id
     const limite = Number(req.query.limit) || 5;
     const salto = Number(req.query.skip) || 0;
-    // console.log(usuarioId)
-    // console.log(req.usuario._id)
     try {
         const notaDB = await Nota.find({ usuarioId }).skip(salto).limit(limite)
         // contar documentos
