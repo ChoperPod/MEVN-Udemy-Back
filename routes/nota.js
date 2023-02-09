@@ -81,13 +81,10 @@ router.get('/nota', verificarAuth, async (req, res) => {
     // console.log(usuarioId)
     // console.log(req.usuario._id)
     try {
-        const notaDB = await Nota.find({ usuarioId }).limit(limite).skip(salto)
+        const notaDB = await Nota.find({ usuarioId }).skip(salto).limit(limite)
         // contar documentos
         const totalNotas = await Nota.find({ usuarioId }).countDocuments();
         res.json({ notaDB, totalNotas });
-
-        // console.log(notaDB)
-        res.json(notaDB)
     } catch (error) {
         return res.status(400).json({
             mensaje: 'Ocurrio un error',
